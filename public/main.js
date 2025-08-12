@@ -51,24 +51,11 @@ socket.on("chat-message", (data) => {
   messageTone.play();
   addMessageToUI(false, data);
 
-  // if (document.hidden && Notification.permission === "granted") {
-  //   new Notification(`💬 ${data.name}`, {
-  //     body: data.message,
-  //   });
-  // }
-
-  navigator.serviceWorker.register('/sw.js').then(reg => {
-    Notification.requestPermission().then(permission => {
-      if (permission === 'granted') {
-        reg.showNotification('💬 ' + data.name, {
-          body: data.message,
-          // icon: '/icon.png'
-        });
-      }
+  if (document.hidden && Notification.permission === "granted") {
+    new Notification(`💬 ${data.name}`, {
+      body: data.message,
     });
-  });
-
-  
+  }
 });
 
 function addMessageToUI(isOwnMessage, data) {
