@@ -9,6 +9,13 @@ const messageInput = document.getElementById("message-input");
 
 const messageTone = new Audio("/message-tone.mp3");
 
+if ('Notification' in window && navigator.serviceWorker) {
+  console.log('Notifications and service workers supported');
+} else {
+  console.log('Not supported on this device/browser');
+}
+
+
 if (Notification.permission === "default") {
   Notification.requestPermission().then((permission) => {
     console.log("Notification permission:", permission);
@@ -44,11 +51,24 @@ socket.on("chat-message", (data) => {
   messageTone.play();
   addMessageToUI(false, data);
 
-  if (document.hidden && Notification.permission === "granted") {
-    new Notification(`💬 ${data.name}`, {
-      body: data.message,
+  // if (document.hidden && Notification.permission === "granted") {
+  //   new Notification(`💬 ${data.name}`, {
+  //     body: data.message,
+  //   });
+  // }
+
+  navigator.serviceWorker.register('/sw.js').then(reg => {
+    Notification.requestPermission().then(permission => {
+      if (permission === 'granted') {
+        reg.showNotification('💬 ' + data.name, {
+          body: data.message,
+          // icon: '/icon.png'
+        });
+      }
     });
-  }
+  });
+
+  
 });
 
 function addMessageToUI(isOwnMessage, data) {
