@@ -134,7 +134,7 @@ html, body {
 .message-form {
   display: flex;
   width: 100%;
-  border-top: 2px solid rgba(0,0,0,0.05);
+  border-top: 2px solid rgba(0,0,0,0.2);
   background: rgba(255,255,255,0.95);
 }
 
@@ -167,7 +167,7 @@ html, body {
 .v-divider {
   height: 48px;
   width: 2px;
-  background-color: rgba(0,0,0,0.05);
+  background-color: rgba(0,0,0,0.15);
 }
 
 .clients-total {
@@ -210,9 +210,7 @@ html, body {
 
 /* Mobile phones */
 @media (max-width: 480px) {
-  html, body {
-    padding: 10px;
-  }
+
   .main {
     border-width: 2px;
     border-radius: 12px;
@@ -225,7 +223,7 @@ html, body {
     margin: 6px;
   }
   .message-container {
-    height: 55vh;
+    height: 70vh;
   }
   .message-input {
     font-size: 14px;

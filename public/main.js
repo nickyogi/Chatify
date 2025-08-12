@@ -7,15 +7,13 @@ const nameInput = document.getElementById("name-input");
 const messageForm = document.getElementById("message-form");
 const messageInput = document.getElementById("message-input");
 
-const messageTone = new Audio('/message-tone.mp3')
-
+const messageTone = new Audio("/message-tone.mp3");
 
 if (Notification.permission === "default") {
-    Notification.requestPermission().then(permission => {
-      console.log("Notification permission:", permission);
-    });
-  }
-
+  Notification.requestPermission().then((permission) => {
+    console.log("Notification permission:", permission);
+  });
+}
 
 messageForm.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -43,25 +41,30 @@ function sendMessage() {
 }
 
 socket.on("chat-message", (data) => {
-    messageTone.play();
-    addMessageToUI(false, data);
-  
-    if (document.hidden && Notification.permission === "granted") {
-      new Notification(`💬 ${data.name}`, {
-        body: data.message,
-      });
-    }
-  });
-  
+  messageTone.play();
+  addMessageToUI(false, data);
+
+  if (document.hidden && Notification.permission === "granted") {
+    new Notification(`💬 ${data.name}`, {
+      body: data.message,
+    });
+  }
+});
 
 function addMessageToUI(isOwnMessage, data) {
-    document.querySelectorAll(".animate").forEach((element) => element.classList.remove("animate"))
-    clearFeedback();
+  document
+    .querySelectorAll(".animate")
+    .forEach((element) => element.classList.remove("animate"));
+  clearFeedback();
   const element = `
-        <li class="${isOwnMessage ? "message-right animate" : "message-left animate"}">
+        <li class="${
+          isOwnMessage ? "message-right animate" : "message-left animate"
+        }">
           <p class="message">
             ${data.message}
-            <span><span>${data.name}</span> <span>⏰ ${moment(data.dateTime).fromNow()}</span></span>
+            <span><span>${data.name}</span> <span>⏰ ${moment(
+    data.dateTime
+  ).fromNow()}</span></span>
           </p>
         </li>
     `;
@@ -94,6 +97,9 @@ messageInput.addEventListener("blur", (e) => {
 
 socket.on("feedback", (data) => {
   clearFeedback();
+  document
+    .querySelectorAll(".animate")
+    .forEach((element) => element.classList.remove("animate"));
   const element = `<li class="message-feedback">
     <p class="feedback" id="feedback">${data.feedback}</p>
   </li>`;
